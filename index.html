@@ -9,14 +9,6 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Ensure the iframe fills the container */
-        .video-card .video-embed iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
     </style>
 </head>
 <body class="bg-black text-gray-300">
@@ -27,13 +19,13 @@
             <h2 class="text-2xl text-gray-400 mt-2">The 100 Interviews in 100 Days Challenge</h2>
             <div class="mt-6 max-w-4xl mx-auto">
                 <p class="text-gray-400 text-left md:text-center">
-                    I've mentioned many times that at the beginning of my YouTube journey, I didn't know what to do. At some point, I published an interview with Adrian Twarog, and from there, the idea of doing something crazy was born: 100 interviews in 100 days. This was probably one of my toughest challenges because back then I had no other income than the one I had as a full-stack developer. I had to record many of these interviews in the late evening or early morning to make it happen. This gallery showcases the first 101 interviews from that challenge, and more will be added in the future!
+                    At the start of my YouTube journey, I took on a crazy challenge: 100 interviews in 100 days. Juggling this with a full-time developer job meant recording late at night and early in the morning. This gallery showcases the first 101 interviews from that incredible journey, with more to come! How many do you recognize?
                 </p>
             </div>
         </header>
 
         <!-- The video grid will be populated here by JavaScript -->
-        <div id="video-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-12 gap-4">
+        <div id="video-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
             <!-- Video cards will be inserted here -->
         </div>
     </div>
@@ -178,52 +170,28 @@
                 if (videoId) {
                     const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-                    const videoCard = document.createElement('div');
-                    videoCard.className = 'video-card bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-500/40 border border-gray-800 hover:border-gray-700 transition-all duration-300 cursor-pointer';
-                    videoCard.dataset.videoId = videoId;
+                    const videoLink = document.createElement('a');
+                    videoLink.href = video.link;
+                    videoLink.target = '_blank';
+                    videoLink.rel = 'noopener noreferrer';
+                    videoLink.className = 'video-card block bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-500/40 border border-gray-800 hover:border-gray-700 transition-all duration-300 transform hover:-translate-y-1';
                     
-                    videoCard.innerHTML = `
-                        <div class="relative video-embed" style="padding-bottom: 56.25%;"> <!-- 16:9 Aspect Ratio -->
+                    videoLink.innerHTML = `
+                        <div class="relative" style="padding-bottom: 56.25%;"> <!-- 16:9 Aspect Ratio -->
                             <img src="${thumbnailUrl}" alt="Video thumbnail for ${video.guest}" class="absolute top-0 left-0 w-full h-full object-cover">
-                            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
-                                <svg class="w-12 h-12 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
-                                </svg>
-                            </div>
                         </div>
-                        <div class="p-2">
-                            <p class="text-xs font-semibold text-gray-200 truncate" title="Ep. ${video.episode}: ${video.guest}">Ep. ${video.episode}: ${video.guest}</p>
+                        <div class="p-3">
+                            <p class="text-sm font-semibold text-gray-200 truncate" title="Ep. ${video.episode}: ${video.guest}">Ep. ${video.episode}: ${video.guest}</p>
                         </div>
                     `;
-                    videoGrid.appendChild(videoCard);
+                    videoGrid.appendChild(videoLink);
                 }
             });
         }
-
-        /**
-         * Handles click events on the video grid to play videos.
-         */
-        videoGrid.addEventListener('click', (event) => {
-            const card = event.target.closest('.video-card');
-            if (card && card.dataset.videoId) {
-                const videoId = card.dataset.videoId;
-                const embedHtml = `
-                    <iframe 
-                        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                `;
-                // Replace the image container with the iframe
-                card.querySelector('.video-embed').innerHTML = embedHtml;
-                // Remove pointer cursor after playing
-                card.style.cursor = 'default'; 
-            }
-        });
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', populateGrid);
     </script>
 </body>
 </html>
+
