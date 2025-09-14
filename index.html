@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talking with Francesco</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Ensure the iframe fills the container */
+        .video-card .video-embed iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-300">
+
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-bold text-white">Talking with Francesco</h1>
+            <h2 class="text-2xl text-gray-400 mt-2">The 100 Interviews in 100 Days Challenge</h2>
+            <div class="mt-6 max-w-4xl mx-auto">
+                <p class="text-gray-400 text-left md:text-center">
+                    I've mentioned many times that at the beginning of my YouTube journey, I didn't know what to do. At some point, I published an interview with Adrian Twarog, and from there, the idea of doing something crazy was born: 100 interviews in 100 days. This was probably one of my toughest challenges because back then I had no other income than the one I had as a full-stack developer. I had to record many of these interviews in the late evening or early morning to make it happen. This gallery showcases the first 101 interviews from that challenge, and more will be added in the future!
+                </p>
+            </div>
+        </header>
+
+        <!-- The video grid will be populated here by JavaScript -->
+        <div id="video-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-12 gap-4">
+            <!-- Video cards will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // --- Your YouTube video data ---
+        const youtubeVideos = [
+            { episode: 1, guest: 'Adrian Twarog', link: 'https://youtu.be/dzguqZkouGY' },
+            { episode: 2, guest: 'Jack Domleo', link: 'https://youtu.be/dOwWn5GvQF0' },
+            { episode: 3, guest: 'Stefan Natter', link: 'https://youtu.be/EyCNw0NYRFM' },
+            { episode: 4, guest: 'Simon Hoiberg', link: 'https://youtu.be/CKkD5zTOz6w' },
+            { episode: 5, guest: 'Raf Rasenberg', link: 'https://youtu.be/oeZYBDuxDRU' },
+            { episode: 6, guest: 'Nirbhay Vashisht', link: 'https://youtu.be/tCfHIh1IQRk' },
+            { episode: 7, guest: 'Ravin', link: 'https://youtu.be/dTHA6bEdAhA' },
+            { episode: 8, guest: 'Dimler Valecillos', link: 'https://youtu.be/yYx7UENXMaw' },
+            { episode: 9, guest: 'Danny Thompson', link: 'https://youtu.be/kC8tcs7Tjsc' },
+            { episode: 10, guest: 'Jenny Potts', link: 'https://youtu.be/08RuhPRq-_U' },
+            { episode: 11, guest: 'Rohan Paydar', link: 'https://youtu.be/h1_-JEsJoYs' },
+            { episode: 12, guest: 'Ankur Tyagi', link: 'https://youtu.be/frDHavqReWs' },
+            { episode: 13, guest: 'Santiago', link: 'https://youtu.be/VTxskhxd1Ns' },
+            { episode: 14, guest: 'Ben Awad', link: 'https://youtu.be/9Um4vsiJFnQ' },
+            { episode: 15, guest: 'Ania Kubow', link: 'https://youtu.be/PYl4l3u7nWg' },
+            { episode: 16, guest: 'Jessie (Codestackr)', link: 'https://youtu.be/pQ5fk-9ndy0' },
+            { episode: 17, guest: 'Kyle Prinsloo', link: 'https://youtu.be/oWTFvN2ykoA' },
+            { episode: 18, guest: 'Matteo Collina', link: 'https://youtu.be/AX76PwCInRc' },
+            { episode: 19, guest: 'Ria Corpeno', link: 'https://youtu.be/xWbXL478110' },
+            { episode: 20, guest: 'Niall Maher', link: 'https://youtu.be/cC56kHRiWV4' },
+            { episode: 21, guest: 'Jose Rosado', link: 'https://youtu.be/BOpR1B8_KG4' },
+            { episode: 22, guest: 'Thomas Weibenfalk', link: 'https://youtu.be/km-kdGXWGuo' },
+            { episode: 23, guest: 'Anna McDougall', link: 'https://youtu.be/uJxYr0vQW6A' },
+            { episode: 24, guest: 'Marc Backes', link: 'https://youtu.be/hr0zmhFuXS0' },
+            { episode: 25, guest: 'James Q Quick', link: 'https://youtu.be/VW27-n6A5Ns' },
+            { episode: 26, guest: 'Pauline P. Narvas', link: 'https://youtu.be/4yrZJMxK_Gw' },
+            { episode: 27, guest: 'Quincy Larson', link: 'https://youtu.be/3_PaazxmMVg' },
+            { episode: 28, guest: 'Tadas Petra', link: 'https://youtu.be/5Rf2n7YvC-w' },
+            { episode: 29, guest: 'Scott Spence', link: 'https://youtu.be/5pCZaMh2QWk' },
+            { episode: 30, guest: 'Faye Sipiano', link: 'https://youtu.be/022umAZ7DDM' },
+            { episode: 31, guest: 'Seema Saharan', link: 'https://youtu.be/XhANODKeoBY' },
+            { episode: 32, guest: 'Jaime Jorge', link: 'https://youtu.be/FK8Pgdzt-lU' },
+            { episode: 33, guest: 'Michael Irwin', link: 'https://youtu.be/43B15Vd7MlM' },
+            { episode: 34, guest: 'Nader Dabit', link: 'https://youtu.be/KwcoT6NLByM' },
+            { episode: 35, guest: 'Pratham Kumar', link: 'https://youtu.be/rPP-umPNk5M' },
+            { episode: 36, guest: 'Marko Denic', link: 'https://youtu.be/v2PXe19lsEg' },
+            { episode: 37, guest: 'Hassan El Mghari', link: 'https://youtu.be/YB_JczuaMrA' },
+            { episode: 38, guest: 'Mina', link: 'https://youtu.be/lJpWHsWe_qY' },
+            { episode: 39, guest: 'Dennis Ivy', link: 'https://youtu.be/OXVjBpBzrmM' },
+            { episode: 40, guest: 'Ahmad Awais', link: 'https://youtu.be/KNP0maIkKx4' },
+            { episode: 41, guest: 'Devin Ford', link: 'https://youtu.be/42Ic9Shn8TI' },
+            { episode: 42, guest: 'Kassandra Sanch', link: 'https://youtu.be/b8sETb4Fi2Q' },
+            { episode: 43, guest: 'Dimitri Ivashchuk', link: 'https://youtu.be/RXdDZUor5eU' },
+            { episode: 44, guest: 'Elefteria Batsou', link: 'https://youtu.be/k3euQWFBgIk' },
+            { episode: 45, guest: 'Mads Brodt', link: 'https://youtu.be/IV5-TOTFDVU' },
+            { episode: 46, guest: 'Daniel Vassallo', link: 'https://youtu.be/MjR3O1uFN0c' },
+            { episode: 47, guest: 'Jhey Tompkins', link: 'https://youtu.be/gXdt8WifoeE' },
+            { episode: 48, guest: 'Ayush Rawat', link: 'https://youtu.be/XOOjsbk43i0' },
+            { episode: 49, guest: 'Telmo Goncalves', link: 'https://youtu.be/KPq-gH-IhXw' },
+            { episode: 50, guest: 'Dashiell Bark-Huss', link: 'https://youtu.be/3taZS5D1Jl8' },
+            { episode: 51, guest: 'Sandeep Panda', link: 'https://youtu.be/-u5nMyALYPQ' },
+            { episode: 52, guest: 'Edidiong Asikpo', link: 'https://youtu.be/4df1eirXcII' },
+            { episode: 53, guest: 'Randal Kanna', link: 'https://youtu.be/tdajsyYRDbg' },
+            { episode: 54, guest: 'Carla Codes', link: 'https://youtu.be/lWBr7wzoTEw' },
+            { episode: 55, guest: 'Shruti Balasa', link: 'https://youtu.be/8r0oe5g_ltU' },
+            { episode: 56, guest: 'Sarah Shook', link: 'https://youtu.be/-7YpqB8DvnQ' },
+            { episode: 57, guest: 'Stas Klymenko', link: 'https://youtu.be/kLOhOsMxXfE' },
+            { episode: 58, guest: 'Tom Hirst', link: 'https://youtu.be/ZFZdY8grJWU' },
+            { episode: 59, guest: 'Looqman (GTGD)', link: 'https://youtu.be/I34qzNbd6-w' },
+            { episode: 60, guest: 'Florin Pop', link: 'https://youtu.be/VFaGkf8W-tM' },
+            { episode: 61, guest: 'Nehemiah', link: 'https://youtu.be/f3Sd6_TdsA0' },
+            { episode: 62, guest: 'Nadia Zhuk', link: 'https://youtu.be/Og0mU_rQtDU' },
+            { episode: 63, guest: 'James Perkins', link: 'https://youtu.be/8KXnm_s5oYg' },
+            { episode: 64, guest: 'Luciano Mammino', link: 'https://youtu.be/kGa_jvtXKYQ' },
+            { episode: 65, guest: 'Akash Bhandwalkar', link: 'https://youtu.be/OYAFjbSR5Cw' },
+            { episode: 66, guest: 'Eddie Jaoude', link: 'https://youtu.be/EQvvgQHW-kg' },
+            { episode: 67, guest: 'Caleb Curry', link: 'https://youtu.be/-AYZUXKxohE' },
+            { episode: 68, guest: 'Pratham Prasoon', link: 'https://youtu.be/1xtih2yHKgo' },
+            { episode: 69, guest: 'Annie', link: 'https://youtu.be/U94oo0N4ras' },
+            { episode: 70, guest: 'Doctor Code', link: 'https://youtu.be/udY7zIyKu78' },
+            { episode: 71, guest: 'Luc Constantin', link: 'https://youtu.be/EKeefyDThus' },
+            { episode: 72, guest: 'Nathaniel Idahosa', link: 'https://youtu.be/A57JqCC5lJE' },
+            { episode: 73, guest: 'Lors', link: 'https://youtu.be/izgL11XrBTM' },
+            { episode: 74, guest: 'Apoorv Tyagi', link: 'https://youtu.be/YF8oawutH4w' },
+            { episode: 75, guest: 'Bret Fisher', link: 'https://youtu.be/Xh_0TqIOsi8' },
+            { episode: 76, guest: 'Sarthak', link: 'https://youtu.be/XfMru-UFnEM' },
+            { episode: 77, guest: 'Prem P. Acharya', link: 'https://youtu.be/syQMyYgvdUw' },
+            { episode: 78, guest: 'Kenneth Cassel', link: 'https://youtu.be/cmVRALbHWlM' },
+            { episode: 79, guest: 'Igor Silvera', link: 'https://youtu.be/JsSVskQEnMk' },
+            { episode: 80, guest: 'Robert Brunhage', link: 'https://youtu.be/v2XiGr3b8Zc' },
+            { episode: 81, guest: 'Laura Harvey', link: 'https://youtu.be/FhLsRKTY7Hk' },
+            { episode: 82, guest: 'Catalin Pit', link: 'https://youtu.be/Tt6hBgQRBz4' },
+            { episode: 83, guest: 'Gagan Deep Singh', link: 'https://youtu.be/uhFjrf3Kzq4' },
+            { episode: 84, guest: 'Eliahu Garcia Lozano', link: 'https://youtu.be/XI-zetJY_UM' },
+            { episode: 85, guest: 'Nimrod Kramer', link: 'https://youtu.be/eaTwEYbiqOM' },
+            { episode: 86, guest: 'Catalin Miron', link: 'https://youtu.be/jSplAnQgLSE' },
+            { episode: 87, guest: 'Sulamita Ivanov', link: 'https://youtu.be/92Ayjpm__mA' },
+            { episode: 88, guest: 'Jessica Chan (theCoderCoder)', link: 'https://youtu.be/nqe5u_iUy4w' },
+            { episode: 89, guest: 'Kvin Powell', link: 'https://youtu.be/otLDUHJO1jE' },
+            { episode: 90, guest: 'Tomi Tokko', link: 'https://youtu.be/BsOVG5-8xqU' },
+            { episode: 91, guest: 'Deni Moka', link: 'https://youtu.be/YFeEhy7gwpQ' },
+            { episode: 92, guest: 'Nick White', link: 'https://youtu.be/u1WrsUgt5lM' },
+            { episode: 93, guest: 'Gary Simon', link: 'https://youtu.be/6fLdJKHLOfc' },
+            { episode: 94, guest: 'Proful Sadangi', link: 'https://youtu.be/3kl86MObAEk' },
+            { episode: 95, guest: 'Dorian Develops', link: 'https://youtu.be/c3jWKYfQVys' },
+            { episode: 96, guest: 'Kyle (WebdevSimplified)', link: 'https://youtu.be/O7FET3GT4-I' },
+            { episode: 97, guest: 'William Candillon', link: 'https://youtu.be/sVK49Fh-sFc' },
+            { episode: 98, guest: 'Jordan', link: 'https://youtu.be/jHz9hn4J4QI' },
+            { episode: 99, guest: 'Sid Palas', link: 'https://youtu.be/lEUGhj-Ibsg' },
+            { episode: 100, guest: 'Never Stop Learning', link: 'https://youtu.be/aojygTaQppM' },
+            { episode: 101, guest: 'Adrian Twarog', link: 'https://youtu.be/cO8dRrP32t0' }
+        ];
+        // -----------------------------------------
+
+        const videoGrid = document.getElementById('video-grid');
+
+        /**
+         * Extracts the YouTube video ID from a URL.
+         * @param {string} url - The YouTube URL.
+         * @returns {string|null} The video ID or null if not found.
+         */
+        function getYouTubeVideoId(url) {
+            let videoId = null;
+            try {
+                const urlObj = new URL(url);
+                if (urlObj.hostname === "www.youtube.com" || urlObj.hostname === "youtube.com") {
+                    videoId = urlObj.searchParams.get("v");
+                } else if (urlObj.hostname === "youtu.be") {
+                    videoId = urlObj.pathname.slice(1);
+                }
+            } catch (e) {
+                console.error("Invalid URL:", url, e);
+            }
+            return videoId;
+        }
+
+        /**
+         * Creates and appends all video cards to the grid.
+         */
+        function populateGrid() {
+            if (!videoGrid) return;
+
+            youtubeVideos.forEach((video) => {
+                const videoId = getYouTubeVideoId(video.link);
+                if (videoId) {
+                    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
+                    const videoCard = document.createElement('div');
+                    videoCard.className = 'video-card bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-purple-500/40 border border-gray-800 hover:border-gray-700 transition-all duration-300 cursor-pointer';
+                    videoCard.dataset.videoId = videoId;
+                    
+                    videoCard.innerHTML = `
+                        <div class="relative video-embed" style="padding-bottom: 56.25%;"> <!-- 16:9 Aspect Ratio -->
+                            <img src="${thumbnailUrl}" alt="Video thumbnail for ${video.guest}" class="absolute top-0 left-0 w-full h-full object-cover">
+                            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
+                                <svg class="w-12 h-12 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <p class="text-xs font-semibold text-gray-200 truncate" title="Ep. ${video.episode}: ${video.guest}">Ep. ${video.episode}: ${video.guest}</p>
+                        </div>
+                    `;
+                    videoGrid.appendChild(videoCard);
+                }
+            });
+        }
+
+        /**
+         * Handles click events on the video grid to play videos.
+         */
+        videoGrid.addEventListener('click', (event) => {
+            const card = event.target.closest('.video-card');
+            if (card && card.dataset.videoId) {
+                const videoId = card.dataset.videoId;
+                const embedHtml = `
+                    <iframe 
+                        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                `;
+                // Replace the image container with the iframe
+                card.querySelector('.video-embed').innerHTML = embedHtml;
+                // Remove pointer cursor after playing
+                card.style.cursor = 'default'; 
+            }
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', populateGrid);
+    </script>
+</body>
+</html>
